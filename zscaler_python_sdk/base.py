@@ -1,10 +1,10 @@
-import configparser 
+import configparser
+
 
 class Base(object):
-
     def __init__(self) -> None:
         config = configparser.ConfigParser()
-        config.read('config/config.ini')
+        config.read("config/config.ini")
 
         self.cloud_name: str = config["credential"]["HOSTNAME"]
         self.base_url: str = f"https://admin.{self.cloud_name}/api/v1"

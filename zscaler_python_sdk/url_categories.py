@@ -22,7 +22,9 @@ def extract_url_domain(target_url):
 
 def fetch_url_categories(isCustomOnly: bool = False) -> str:
     """Get Zscaler's url catergories."""
-    response = api_get("/urlCategories?customOnly=true" if isCustomOnly else "/urlCategories")
+    response = api_get(
+        "/urlCategories?customOnly=true" if isCustomOnly else "/urlCategories"
+    )
     return response.json()
 
 

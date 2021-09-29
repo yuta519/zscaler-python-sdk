@@ -53,7 +53,9 @@ def create_adminuser(
         "name": "Yuta Kawamura",
     }
 
-    admin_user_response: Response = api_post(user_api_endpoint_path, admin_user_information)
+    admin_user_response: Response = api_post(
+        user_api_endpoint_path, admin_user_information
+    )
 
     message: str = "Success" if admin_user_response.status_code == 200 else f"Failed"
     # message += f": {user_response.status_code} {user_response.text}" if message == "Failed" else None

@@ -104,7 +104,7 @@ def api_post(
         "cookie": api_token,
     }
     response: Response = requests.post(
-        api_endpoint, 
+        api_endpoint,
         json.dumps(payload),
         headers=headers,
     )
@@ -129,7 +129,7 @@ def api_put(
         "cookie": api_token,
     }
     response: Response = requests.put(
-        api_endpoint, 
+        api_endpoint,
         json.dumps(payload),
         headers=headers,
     )
