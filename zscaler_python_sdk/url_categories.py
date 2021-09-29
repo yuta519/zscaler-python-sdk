@@ -1,16 +1,12 @@
 import json
 from re import match
-from typing import Dict, List
+from typing import Dict, List, Optional
 from urllib.parse import urlparse
 
 import requests
+from requests.models import Response
 
-from auth import login
-from auth import logout
-from base import Base
-
-
-base = Base()
+from zscaler_python_sdk.zia import api_get, api_post, api_put
 
 
 def extract_url_domain(target_url):
@@ -26,20 +22,7 @@ def extract_url_domain(target_url):
 
 def fetch_url_categories(isCustomOnly: bool = False) -> str:
     """Get Zscaler's url catergories."""
-    api_token = login()
-    api_endpoint = (
-        "{}/urlCategories?customOnly=true".format(base.base_url)
-        if isCustomOnly
-        else "{}/urlCategories".format(base.base_url)
-    )
-    headers = {
-        "content-type": "application/json",
-        "cache-control": "no-cache",
-        "cookie": api_token,
-    }
-    response = requests.get(api_endpoint, headers=headers)
-    logout(api_token)
-
+    response = api_get("/urlCategories?customOnly=true" if isCustomOnly else "/urlCategories")
     return response.json()
 
 
@@ -47,15 +30,8 @@ def create_custom_url_category(
     configured_name: str,
     urls: List[str],
     db_categorized_urls: List[str],
-    description: str,
+    description: Optional[str],
 ) -> str:
-    api_token = login()
-    api_endpoint = "{}/urlCategories".format(base.base_url)
-    headers = {
-        "content-type": "application/json",
-        "cache-control": "no-cache",
-        "cookie": api_token,
-    }
     payload = {
         "configuredName": configured_name,
         "urls": urls,
@@ -67,8 +43,7 @@ def create_custom_url_category(
         "urlsRetainingParentCategoryCount": 0,
         "type": "URL_CATEGORY",
     }
-    response = requests.post(api_endpoint, json.dumps(payload), headers=headers)
-    logout(api_token)
+    response: Response = api_post("/urlCategories", payload)
     message: str = (
         f"[INFO] {str(response.status_code)} {response.json()['configuredName']}"
         if response.status_code == 200
@@ -82,31 +57,15 @@ def update_custom_url_category(
     urls: List[str],
 ) -> str:
     """Update an existing Zscaler's url catergory."""
-    api_endpoint = f"{base.base_url}/urlCategories/{category_id}"
-    api_token = login()
-    headers = {
-        "content-type": "application/json",
-        "cache-control": "no-cache",
-        "cookie": api_token,
-    }
     payload = {urls}
-    response = requests.put(api_endpoint, data=json.dumps(payload), headers=headers)
-    logout(api_token)
+    response = api_put(f"/urlCategories/{category_id}", payload)
 
     return response.json()
 
 
 def lookup_url_classification(target_urls: List[str]) -> Dict[str, str]:
     """Lookup url category classifications to given url."""
-    api_token = login()
-    api_endpoint = "{}/urlLookup".format(base.base_url)
-    headers = {
-        "content-type": "application/json",
-        "cache-control": "no-cache",
-        "cookie": api_token,
-    }
     domains = [extract_url_domain(url) for url in target_urls]
-    response = requests.post(api_endpoint, json.dumps(domains), headers=headers)
-    logout(api_token)
+    response = api_post("/urlLookup", domains)
 
     return response.json()

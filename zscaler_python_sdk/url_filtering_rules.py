@@ -2,30 +2,16 @@ import json
 from typing import Dict
 from typing import List
 from typing import Union
+from zscaler_python_sdk.zia import api_get, api_post, api_put
 
 import requests
 from requests import status_codes
 from requests.models import Response
 
-from auth import login
-from auth import logout
-from base import Base
-
-base = Base()
-
 
 def fetch_all_url_filering_rules(isFull: bool = False) -> Dict[str, str]:
     """Get Zscaler's url filtering rules."""
-    api_endpoint: str = f"{base.base_url}/urlFilteringRules"
-    api_token: str = login()
-    headers: dict[str, str] = {
-        "content-type": "application/json",
-        "cache-control": "no-cache",
-        "cookie": api_token,
-    }
-    response: Response = requests.get(api_endpoint, headers=headers)
-    logout(api_token)
-
+    response: Response = api_get("/urlFilteringRules")
     url_filtering_rules: list = response.json()
 
     if not isFull:
@@ -40,6 +26,7 @@ def fetch_all_url_filering_rules(isFull: bool = False) -> Dict[str, str]:
                 )
         except:
             pass
+
     url_filtering_rules = sorted(url_filtering_rules, key=lambda x:x['order'])
     
     return url_filtering_rules
@@ -62,14 +49,6 @@ def create_url_filering_rules(
     rank: int,
     action: str
 ) -> str:
-    api_endpoint: str = f"{base.base_url}/urlFilteringRules"
-    api_token: str = login()
-    headers: dict[str, str] = {
-        "content-type": "application/json",
-        "cache-control": "no-cache",
-        "cookie": api_token,
-    }
-
     payload: Dict[str, Union[str, int, List[str]]] = {
         "name": name,
         "order": order,
@@ -83,10 +62,7 @@ def create_url_filering_rules(
         "rank": rank,
         "action": action,
     }
-    response: Response = requests.post(
-        api_endpoint, json.dumps(payload), headers=headers
-    )
-    logout(api_token)
+    response: Response = api_post("/urlFilteringRules", payload)
 
     message =(
         f"Success: '{response.json()['name']}' is created" if response.status_code == 200 

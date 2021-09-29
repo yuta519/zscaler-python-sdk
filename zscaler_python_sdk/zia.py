@@ -1,6 +1,6 @@
 import json
 import time
-from typing import List
+from typing import Any, Dict, List
 from typing import Union
 
 import requests
@@ -36,7 +36,7 @@ def login() -> str:
     """Login to Zscaler and create an api session."""
     obfuscate_api_key: List[int, str] = obfuscateApiKey()
 
-    api_endpoint: str = "{}/authenticatedSession".format(base.base_url)
+    api_endpoint: str = f"{base.base_url}/authenticatedSession"
     headers: dict[str, str] = {
         "content-type": "application/json",
         "cache-control": "no-cache",
@@ -72,3 +72,71 @@ def logout(api_token) -> None:
         "cookie": api_token,
     }
     requests.delete(api_endpoint, headers=headers)
+
+
+def api_get(endpoint_path: str) -> Response:
+    """ """
+    api_endpoint: str = f"{base.base_url}{endpoint_path}"
+    api_token: str = login()
+    headers: dict[str, str] = {
+        "content-type": "application/json",
+        "cache-control": "no-cache",
+        "cookie": api_token,
+    }
+    response: Response = requests.get(api_endpoint, headers=headers)
+    logout(api_token)
+
+    if response.status_code == 200:
+        return response
+    else:
+        pass
+
+
+def api_post(
+    endpoint_path: str,
+    payload: Dict[Any, Any],
+) -> Response:
+    api_endpoint: str = f"{base.base_url}{endpoint_path}"
+    api_token: str = login()
+    headers: dict[str, str] = {
+        "content-type": "application/json",
+        "cache-control": "no-cache",
+        "cookie": api_token,
+    }
+    response: Response = requests.post(
+        api_endpoint, 
+        json.dumps(payload),
+        headers=headers,
+    )
+    logout(api_token)
+
+    if response.status_code == 200:
+        return response
+    else:
+        print(response.status_code)
+        print(response.text)
+
+
+def api_put(
+    endpoint_path: str,
+    payload: Dict[Any, Any],
+) -> Response:
+    api_endpoint: str = f"{base.base_url}{endpoint_path}"
+    api_token: str = login()
+    headers: dict[str, str] = {
+        "content-type": "application/json",
+        "cache-control": "no-cache",
+        "cookie": api_token,
+    }
+    response: Response = requests.put(
+        api_endpoint, 
+        json.dumps(payload),
+        headers=headers,
+    )
+    logout(api_token)
+
+    if response.status_code == 200:
+        return response
+    else:
+        print(response.status_code)
+        print(response.text)
