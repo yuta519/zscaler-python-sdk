@@ -1,24 +1,26 @@
-import json
-from typing import Dict
+from typing import Any
+from typing import Dict 
 from typing import List
 from typing import Union
 
 from requests.models import Response
 
-from zscaler_python_sdk.zia import api_get, api_post
+from zscaler_python_sdk.zia import api_get
+from zscaler_python_sdk.zia import api_post
 
 
-def fetch_adminusers(search_query: str = None) -> str:
+def fetch_adminusers(search_query: str = None) -> List[Dict[Any, Any]]:
     """Get Zscaler's url catergories."""
     endpoint_path: str = "/adminUsers"
     if search_query is not None:
         endpoint_path = f"{endpoint_path}?search={search_query}"
     response: Response = api_get(endpoint_path)
-    print(response.text)
+    return response.json()
 
 
 def fetch_adminroles():
-    pass
+    response: Response = api_get("/adminRoles/lite")
+    return response.json()
 
 
 def create_adminuser(
