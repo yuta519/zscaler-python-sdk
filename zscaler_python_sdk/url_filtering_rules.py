@@ -7,14 +7,16 @@ from zscaler_python_sdk.zia import api_post
 from requests.models import Response
 
 
-def fetch_all_url_filering_rules(isFull: bool = False) -> Dict[str, str]:
+def fetch_all_url_filering_rules(
+    isFull: bool = False, tenant: str = None
+) -> Dict[str, str]:
     """Get Zscaler's url filtering rules."""
-    response: Response = api_get("/urlFilteringRules")
-    url_filtering_rules: list = response.json()
+    response: Response = api_get("/urlFilteringRules", tenant)
+    url_filtering_rules: list = response
 
     if not isFull:
-        try:
-            for url_filtering_rule in url_filtering_rules:
+        for tenant_name in url_filtering_rules.keys():
+            for url_filtering_rule in url_filtering_rules[tenant_name]:
                 del (
                     url_filtering_rule["rank"],
                     url_filtering_rule["requestMethods"],
@@ -22,10 +24,9 @@ def fetch_all_url_filering_rules(isFull: bool = False) -> Dict[str, str]:
                     url_filtering_rule["enforceTimeValidity"],
                     url_filtering_rule["cbiProfileId"],
                 )
-        except RuntimeError:
-            pass
-
-    url_filtering_rules = sorted(url_filtering_rules, key=lambda x: x["order"])
+            url_filtering_rules[tenant_name] = sorted(
+                url_filtering_rules[tenant_name], key=lambda x: x["order"]
+            )
 
     return url_filtering_rules
 
@@ -46,6 +47,7 @@ def create_url_filering_rules(
     state: str,
     rank: int,
     action: str,
+    tenant: str,
 ) -> str:
     payload: Dict[str, Union[str, int, List[str]]] = {
         "name": name,
@@ -60,7 +62,7 @@ def create_url_filering_rules(
         "rank": rank,
         "action": action,
     }
-    response: Response = api_post("/urlFilteringRules", payload)
+    response: Response = api_post("/urlFilteringRules", payload, tenant)
 
     message = (
         f"Success: '{response.json()['name']}' is created"
