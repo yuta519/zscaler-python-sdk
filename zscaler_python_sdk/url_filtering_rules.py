@@ -1,11 +1,9 @@
-import json
 from typing import Dict
 from typing import List
 from typing import Union
-from zscaler_python_sdk.zia import api_get, api_post, api_put
+from zscaler_python_sdk.zia import api_get
+from zscaler_python_sdk.zia import api_post
 
-import requests
-from requests import status_codes
 from requests.models import Response
 
 
@@ -24,7 +22,7 @@ def fetch_all_url_filering_rules(isFull: bool = False) -> Dict[str, str]:
                     url_filtering_rule["enforceTimeValidity"],
                     url_filtering_rule["cbiProfileId"],
                 )
-        except:
+        except RuntimeError:
             pass
 
     url_filtering_rules = sorted(url_filtering_rules, key=lambda x: x["order"])

@@ -12,6 +12,10 @@ from zscaler_python_sdk.base import Base
 base = Base()
 
 
+def fetch_tenants() -> List[str]:
+    return base.tenants
+
+
 def obfuscateApiKey() -> List[Union[int, str]]:
     """Parse API Key to use zscaler api.
     This functions are supplied by Zscaler.
