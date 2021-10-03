@@ -59,7 +59,7 @@ def create_custom_url_category(
 
 
 def update_custom_url_category(
-    category_id: str, urls: List[str], tenant: Optional[str]
+    category_id: str, urls: List[str], tenant: Optional[str] = None,
 ) -> str:
     """Update an existing Zscaler's url catergory."""
     payload = {urls}

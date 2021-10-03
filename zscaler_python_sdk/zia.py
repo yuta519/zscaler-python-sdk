@@ -83,7 +83,10 @@ def logout(api_token: str, tenant: str) -> None:
 
 def api_get(endpoint_path: str, tenant: Optional[str] = None) -> Dict[Any, Any]:
     """ """
-    if tenant in fetch_tenants():
+
+    def get_request(
+        tenant: str, response_list: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         api_endpoint: str = f"{base.base_url[tenant]}{endpoint_path}"
         api_token: str = login(tenant)
         headers: dict[str, str] = {
@@ -95,25 +98,18 @@ def api_get(endpoint_path: str, tenant: Optional[str] = None) -> Dict[Any, Any]:
         logout(api_token, tenant)
 
         if response.status_code == 200:
-            return response.json()
-
-    if tenant is None:
-        response_list: List[Dict[str, Any]] = {}
-        for tenant in fetch_tenants():
-            api_endpoint: str = f"{base.base_url[tenant]}{endpoint_path}"
-            api_token: str = login(tenant)
-            headers: dict[str, str] = {
-                "content-type": "application/json",
-                "cache-control": "no-cache",
-                "cookie": api_token,
-            }
-            response: Response = requests.get(api_endpoint, headers=headers)
-            logout(api_token, tenant)
-
-            if response.status_code == 200:
-                response_list[tenant] = response.json()
+            response_list[tenant] = response.json()
 
         return response_list
+
+    response_list: List[Dict[str, Any]] = {}
+    if tenant in fetch_tenants():
+        get_request(tenant, response_list)
+    if tenant is None:
+        for tenant in fetch_tenants():
+            get_request(tenant, response_list)
+
+    return response_list
 
 
 def api_post(
@@ -121,8 +117,11 @@ def api_post(
     payload: Dict[Any, Any],
     tenant: Optional[str] = None,
 ) -> Response:
-    response_list: List[Dict[str, Any]] = {}
-    if tenant in fetch_tenants():
+    """"""
+
+    def post_request(
+        tenant: str, response_list: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         api_endpoint: str = f"{base.base_url[tenant]}{endpoint_path}"
         api_token: str = login(tenant)
         headers: dict[str, str] = {
@@ -139,25 +138,14 @@ def api_post(
 
         if response.status_code == 200:
             response_list[tenant] = response.json()
+        return response_list
 
+    response_list: List[Dict[str, Any]] = {}
+    if tenant in fetch_tenants():
+        post_request(tenant, response_list)
     if tenant is None:
         for tenant in fetch_tenants():
-            api_endpoint: str = f"{base.base_url[tenant]}{endpoint_path}"
-            api_token: str = login(tenant)
-            headers: dict[str, str] = {
-                "content-type": "application/json",
-                "cache-control": "no-cache",
-                "cookie": api_token,
-            }
-            response: Response = requests.post(
-                api_endpoint,
-                json.dumps(payload),
-                headers=headers,
-            )
-            logout(api_token, tenant)
-
-            if response.status_code == 200:
-                response_list[tenant] = response.json()
+            post_request(tenant, response_list)
 
     return response_list
 
