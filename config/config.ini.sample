@@ -1,4 +1,4 @@
-[credential]
+[tenant_name]
 USERNAME=admin@zscaler.net
 PASSWORD=xxxx
 HOSTNAME=admin.zscaler.net
