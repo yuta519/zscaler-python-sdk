@@ -1,11 +1,15 @@
-from zscaler_python_sdk.url_filtering_rules import fetch_all_url_filering_rules
-from zscaler_python_sdk.admin import create_adminuser, fetch_adminusers
-from zscaler_python_sdk.url_categories import create_custom_url_category
-from zscaler_python_sdk.url_categories import fetch_url_categories
+# from zscaler_python_sdk.url_filtering_rules import fetch_all_url_filering_rules
+# from zscaler_python_sdk.admin import create_adminuser
+# from zscaler_python_sdk.admin import fetch_adminroles
+# from zscaler_python_sdk.admin import fetch_adminusers
+# from zscaler_python_sdk.url_categories import create_custom_url_category
+# from zscaler_python_sdk.url_categories import fetch_url_categories
+
 from zscaler_python_sdk.url_categories import lookup_url_classification
 
 # from zscaler_python_sdk.url_categories import
 
+# from zscaler_python_sdk.zia import fetch_tenants
 
 # print(fetch_adminusers())
 
@@ -18,6 +22,7 @@ from zscaler_python_sdk.url_categories import lookup_url_classification
 # ))
 
 
+# print(fetch_url_categories(tenant="softbank-demo-05"))
 # print(fetch_url_categories())
 
 
@@ -29,13 +34,13 @@ from zscaler_python_sdk.url_categories import lookup_url_classification
 # )
 # print(mess)
 
-# create_adminuser(
-#     loginName="test1@zscaler.net",
+# print(create_adminuser(
+#     loginName="test1@softbank-demo-05.com",
 #     userName="Yuta Kawamura",
-#     email="test1@zscaler.net",
+#     email="test1@softbank-demo-05.com",
 #     password="P@ssw0rd",
-#     rolename="Admin",
-# )
+#     rolename="Super Admin",
+# ))
 
 # print(fetch_all_url_filering_rules())
 
@@ -53,8 +58,8 @@ from zscaler_python_sdk.url_categories import lookup_url_classification
 #     action="ALLOW",
 # )
 # fetch_url_categories()
-# classfication = lookup_url_classification(["aaa.com"])
-# print(classfication)
+classfication = lookup_url_classification(["aaa.com"])
+print(classfication)
 # create_custom_url_category(
 #     configured_name="TEST CATEGORY",
 #     urls=[".test.co.jp"],
@@ -65,3 +70,6 @@ from zscaler_python_sdk.url_categories import lookup_url_classification
 # print(lookup_url_classification(["hoge.com"]))
 
 # print(fetch_all_url_filering_rules())
+
+
+# print(fetch_adminroles())

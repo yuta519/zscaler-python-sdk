@@ -1,12 +1,12 @@
-import json
 from re import match
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
-import requests
 from requests.models import Response
 
-from zscaler_python_sdk.zia import api_get, api_post, api_put
+from zscaler_python_sdk.zia import api_get
+from zscaler_python_sdk.zia import api_post
+from zscaler_python_sdk.zia import api_put
 
 
 def extract_url_domain(target_url):
@@ -20,12 +20,15 @@ def extract_url_domain(target_url):
         return target_url
 
 
-def fetch_url_categories(isCustomOnly: bool = False) -> str:
+def fetch_url_categories(
+    isCustomOnly: bool = False, tenant: str = None
+) -> Dict[Any, Any]:
     """Get Zscaler's url catergories."""
     response = api_get(
-        "/urlCategories?customOnly=true" if isCustomOnly else "/urlCategories"
+        "/urlCategories?customOnly=true" if isCustomOnly else "/urlCategories",
+        tenant=tenant,
     )
-    return response.json()
+    return response
 
 
 def create_custom_url_category(
@@ -33,6 +36,7 @@ def create_custom_url_category(
     urls: List[str],
     db_categorized_urls: List[str],
     description: Optional[str],
+    tenant: Optional[str] = None,
 ) -> str:
     payload = {
         "configuredName": configured_name,
@@ -45,7 +49,7 @@ def create_custom_url_category(
         "urlsRetainingParentCategoryCount": 0,
         "type": "URL_CATEGORY",
     }
-    response: Response = api_post("/urlCategories", payload)
+    response: Response = api_post("/urlCategories", payload, tenant)
     message: str = (
         f"[INFO] {str(response.status_code)} {response.json()['configuredName']}"
         if response.status_code == 200
@@ -55,19 +59,21 @@ def create_custom_url_category(
 
 
 def update_custom_url_category(
-    category_id: str,
-    urls: List[str],
+    category_id: str, urls: List[str], tenant: Optional[str]
 ) -> str:
     """Update an existing Zscaler's url catergory."""
     payload = {urls}
-    response = api_put(f"/urlCategories/{category_id}", payload)
+    response = api_put(f"/urlCategories/{category_id}", payload, tenant)
 
     return response.json()
 
 
-def lookup_url_classification(target_urls: List[str]) -> Dict[str, str]:
+def lookup_url_classification(
+    target_urls: List[str],
+    tenant: Optional[str] = None,
+) -> Dict[str, str]:
     """Lookup url category classifications to given url."""
     domains = [extract_url_domain(url) for url in target_urls]
-    response = api_post("/urlLookup", domains)
+    response = api_post("/urlLookup", domains, tenant)
 
-    return response.json()
+    return response
