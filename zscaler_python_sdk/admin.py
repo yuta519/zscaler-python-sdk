@@ -9,18 +9,23 @@ from zscaler_python_sdk.zia import api_get
 from zscaler_python_sdk.zia import api_post
 
 
-def fetch_adminusers(search_query: str = None) -> List[Dict[Any, Any]]:
+def fetch_adminusers(
+    search_query: str = None,
+    tenant: str = None,
+) -> List[Dict[Any, Any]]:
     """Get Zscaler's url catergories."""
     endpoint_path: str = "/adminUsers"
     if search_query is not None:
         endpoint_path = f"{endpoint_path}?search={search_query}"
-    response: Response = api_get(endpoint_path)
-    return response.json()
+    response: Response = api_get(endpoint_path, tenant)
+    return response
 
 
-def fetch_adminroles() -> List[Dict[Any, Any]]:
-    response: Response = api_get("/adminRoles/lite")
-    return response.json()
+def fetch_adminroles(
+    tenant: str = None,
+) -> List[Dict[Any, Any]]:
+    response: Response = api_get("/adminRoles/lite", tenant)
+    return response
 
 
 def create_adminuser(
@@ -29,10 +34,10 @@ def create_adminuser(
     email: str,
     password: str,
     rolename: str,
+    tenant: str,
 ) -> str:
     user_api_endpoint_path: str = "/adminUsers"
-
-    roles: List[Dict[str, Union[int, str]]] = fetch_adminroles()
+    roles: List[Dict[str, Union[int, str]]] = fetch_adminroles(tenant)
     role_id: int = None
 
     for role in roles:
@@ -57,9 +62,11 @@ def create_adminuser(
     }
 
     response: Response = api_post(
-        user_api_endpoint_path, admin_user_information
+        user_api_endpoint_path, admin_user_information, tenant
     )
-    message: str = "Success" if response.status_code == 200 else f"Failed"
-    message += f": {response.status_code} {response.text}" if message == "Failed" else None
+    message: str = "Success" if response.status_code == 200 else "Failed"
+    message += (
+        f": {response.status_code} {response.text}" if message == "Failed" else None
+    )
 
     return message
