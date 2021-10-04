@@ -138,6 +138,10 @@ def api_post(
 
         if response.status_code == 200:
             response_list[tenant] = response.json()
+        else:
+            response_list[
+                tenant
+            ] = f"[Error]{response.status_code}: {response.json()['message']}"
         return response_list
 
     response_list: List[Dict[str, Any]] = {}

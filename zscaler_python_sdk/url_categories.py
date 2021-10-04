@@ -50,16 +50,13 @@ def create_custom_url_category(
         "type": "URL_CATEGORY",
     }
     response: Response = api_post("/urlCategories", payload, tenant)
-    message: str = (
-        f"[INFO] {str(response.status_code)} {response.json()['configuredName']}"
-        if response.status_code == 200
-        else f"[INFO] {str(response.status_code)} {response.json()['message'] }"
-    )
-    return message
+    return response
 
 
 def update_custom_url_category(
-    category_id: str, urls: List[str], tenant: Optional[str] = None,
+    category_id: str,
+    urls: List[str],
+    tenant: Optional[str] = None,
 ) -> str:
     """Update an existing Zscaler's url catergory."""
     payload = {urls}
