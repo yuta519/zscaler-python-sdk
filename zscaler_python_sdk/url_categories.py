@@ -1,8 +1,9 @@
 from re import match
-from typing import Any, Dict, List, Optional
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
 from urllib.parse import urlparse
-
-from requests.models import Response
 
 from zscaler_python_sdk.zia import api_get
 from zscaler_python_sdk.zia import api_post
@@ -49,7 +50,7 @@ def create_custom_url_category(
         "urlsRetainingParentCategoryCount": 0,
         "type": "URL_CATEGORY",
     }
-    response: Response = api_post("/urlCategories", payload, tenant)
+    response = api_post("/urlCategories", payload, tenant)
     return response
 
 
