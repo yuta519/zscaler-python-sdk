@@ -40,15 +40,14 @@ def create_adminuser(
     roles: List[Dict[str, Union[int, str]]] = fetch_adminroles(tenant)
     role_id: int = None
 
-    for role in roles:
+    for role in roles[tenant]:
         if rolename in role.values():
             role_id: int = role["id"]
 
     if role_id is None:
-        message = f"There is no matched roles to specify you, {rolename}"
-        return message
+        return {tenant: f"[Error]There is no matched roles you specified, {rolename}"}
 
-    admin_user_information = {
+    admin_user_information: Dict[str, Any] = {
         "loginName": loginName,
         "userName": userName,
         "email": email,
@@ -64,9 +63,5 @@ def create_adminuser(
     response: Response = api_post(
         user_api_endpoint_path, admin_user_information, tenant
     )
-    message: str = "Success" if response.status_code == 200 else "Failed"
-    message += (
-        f": {response.status_code} {response.text}" if message == "Failed" else None
-    )
 
-    return message
+    return response
