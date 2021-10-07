@@ -1,5 +1,8 @@
+# Please erase comment out, when you try examples below.
+
 # from zscaler_python_sdk.url_categories import create_custom_url_category
 # from zscaler_python_sdk.url_categories import fetch_url_categories
+# from zscaler_python_sdk.url_categories import lookup_url_classification
 
 
 """
@@ -26,4 +29,14 @@ message = create_custom_url_category(
     tenant="xxxxxxxxxxxxxxxx",
 )
 print(message)
+"""
+
+
+"""
+# You can lookup a category in Zscaler which url is given of
+url_category = lookup_url_classification(
+    target_urls=["zscaler.net"],
+    tenant="xxxxxxxxxxxxxxxx",
+)
+print(url_category)
 """
