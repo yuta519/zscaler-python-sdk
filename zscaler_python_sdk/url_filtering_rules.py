@@ -8,7 +8,8 @@ from requests.models import Response
 
 
 def fetch_all_url_filering_rules(
-    isFull: bool = False, tenant: str = None
+    isFull: bool = False,
+    tenant: str = None,
 ) -> Dict[str, str]:
     """Get Zscaler's url filtering rules."""
     response: Response = api_get("/urlFilteringRules", tenant)
@@ -64,9 +65,4 @@ def create_url_filering_rules(
     }
     response: Response = api_post("/urlFilteringRules", payload, tenant)
 
-    message = (
-        f"Success: '{response.json()['name']}' is created"
-        if response.status_code == 200
-        else f"Failed: { response.status_code } { response.json()['message'] }"
-    )
-    return message
+    return response
