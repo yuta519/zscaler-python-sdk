@@ -23,11 +23,31 @@ def fetch_users(
     size_query: Optional[str] = f"pageSize={size}" if size is not None else None
 
     endpoint_path: str = "/users?"
-
     for query in [name_query, dept_query, group_query, page_query, size_query]:
         if query is not None:
             endpoint_path += f"&{query}"
 
-    print(endpoint_path)
     response: Response = api_get(endpoint_path, tenant)
+    return response
+
+
+def fetch_departments(
+    search: Optional[str] = None,
+    tenant: Optional[str] = None,
+) -> Dict[str, Any]:
+    response: Response = api_get(
+        "/departments" if search is None else f"/departments?search={search}",
+        tenant,
+    )
+    return response
+
+
+def fetch_groups(
+    search: Optional[str] = None,
+    tenant: Optional[str] = None,
+) -> Dict[str, Any]:
+    response: Response = api_get(
+        "/groups" if search is None else f"/groups?search={search}",
+        tenant,
+    )
     return response
