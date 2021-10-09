@@ -51,3 +51,8 @@ def fetch_groups(
         tenant,
     )
     return response
+
+
+# TODO: yuta519
+def create_user() -> Dict[str, Any]:
+    pass
