@@ -13,3 +13,24 @@ def fetch_firewall_rules(
         tenant,
     )
     return firewall_rules
+
+
+def create_new_firewall_rule() -> str:
+    pass
+
+
+def fetch_ip_destination_groups(
+    ip_group_id: Optional[int] = None,
+    tenant: Optional[str] = None,
+) -> Dict[str, Any]:
+    ip_destination_groups: Dict[str, Any] = api_get(
+        "/ipDestinationGroups"
+        if ip_group_id is None
+        else f"/ipDestinationGroups/{ip_group_id}",
+        tenant,
+    )
+    return ip_destination_groups
+
+
+def create_ip_destination_groups() -> str:
+    pass
