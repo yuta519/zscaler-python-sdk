@@ -56,3 +56,13 @@ def fetch_groups(
 # TODO: yuta519
 def create_user() -> Dict[str, Any]:
     pass
+
+
+# TODO: yuta519
+def update_user() -> Dict[str, Any]:
+    pass
+
+
+# TODO: yuta519
+def delete_user() -> Dict[str, Any]:
+    pass
