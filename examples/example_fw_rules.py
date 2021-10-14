@@ -1,11 +1,60 @@
 # Please erase comment out, when you try examples below.
 
 # from zscaler_python_sdk.firewall_rules import fetch_firewall_rules
+# from zscaler_python_sdk.firewall_rules import fetch_ip_destination_groups
+# from zscaler_python_sdk.firewall_rules import fetch_ip_source_groups
+# from zscaler_python_sdk.firewall_rules import fetch_network_application_groups
+# from zscaler_python_sdk.firewall_rules import fetch_network_applicatios
 
 """
-# You can fetch users
+# You can fetch firewall rules
 firewall_rules = fetch_firewall_rules(
-    tenant="xxxxxxxxxx",
+    tenant="xxxxxxxxxxxx",
 )
 print(firewall_rules)
+"""
+
+"""
+# You can fetch a specific firewall rule
+specific_firewall_rules = fetch_firewall_rules(
+    rule_id=541982,
+    tenant="xxxxxxxxxxxx",
+)
+print(specific_firewall_rules)
+"""
+
+"""
+ip_destination_groups = fetch_ip_destination_groups(tenant="xxxxxxxxxxxx")
+print(ip_destination_groups)
+"""
+
+
+"""
+ip_destination_groups = fetch_ip_destination_groups(
+    ip_group_id=927590,
+    tenant="xxxxxxxxxxxx",
+)
+print(ip_destination_groups)
+"""
+
+"""
+ip_source_groups = fetch_ip_source_groups(
+    tenant="xxxxxxxxxxxx",
+)
+print(ip_source_groups)
+"""
+
+
+"""
+nw_app_groups = fetch_network_application_groups(
+    tenant="xxxxxxxxxxxx",
+)
+print(nw_app_groups)
+"""
+
+"""
+nw_apps = fetch_network_applicatios(
+    tenant="xxxxxxxxxxxx",
+)
+print(nw_apps)
 """
