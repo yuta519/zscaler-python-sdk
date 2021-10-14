@@ -76,12 +76,36 @@ def fetch_network_application_groups(
     return nw_app_groups
 
 
-def fetch_network_applicatios(
+def fetch_network_applications(
     app_id: Optional[int] = None,
     tenant: Optional[str] = None,
 ) -> Dict[str, Any]:
     nw_apps: Dict[str, Any] = api_get(
         "/networkApplications" if app_id is None else f"/networkApplications/{app_id}",
+        tenant,
+    )
+    return nw_apps
+
+
+def fetch_network_service_groups(
+    group_id: Optional[int] = None,
+    tenant: Optional[str] = None,
+) -> Dict[str, Any]:
+    nw_app_groups: Dict[str, Any] = api_get(
+        "/networkServiceGroups"
+        if group_id is None
+        else f"/networkServiceGroups/{group_id}",
+        tenant,
+    )
+    return nw_app_groups
+
+
+def fetch_network_services(
+    service_id: Optional[int] = None,
+    tenant: Optional[str] = None,
+) -> Dict[str, Any]:
+    nw_apps: Dict[str, Any] = api_get(
+        "/networkServices" if service_id is None else f"/networkServices/{service_id}",
         tenant,
     )
     return nw_apps
