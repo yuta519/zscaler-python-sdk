@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zscaler-python-sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["yuta519 <yuta519.ka23tf@docomo.ne.jp>"]
 
