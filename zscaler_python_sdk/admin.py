@@ -57,7 +57,7 @@ def create_adminuser(
         "adminScopeType": "ORGANIZATION",
         "adminScopeScopeEntities": [],
         "isPasswordLoginAllowed": True,
-        "name": "Yuta Kawamura",
+        "name": userName,
     }
 
     response: Response = api_post(
