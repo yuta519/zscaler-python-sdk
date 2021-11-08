@@ -1,6 +1,8 @@
 from typing import Dict
 from typing import List
+from typing import Optional
 from typing import Union
+
 from zscaler_python_sdk.zia import api_get
 from zscaler_python_sdk.zia import api_post
 
@@ -34,6 +36,24 @@ def fetch_all_url_filering_rules(
 
 def fetch_specific_url_filering_rules():
     pass
+
+
+def fetch_specific_url_filering_rule_id(rule_name: str, tenant: str) -> int:
+    url_filtering_rules: list[str] = api_get("/urlFilteringRules", tenant)
+    target_rule_id: Optional[int] = None
+    for rule in url_filtering_rules:
+        target_rule_id = rule["id"] if rule["name"] == rule_name else None
+    return target_rule_id
+
+
+def update_url_filtering_rule(rule_name: str, tenant: str) -> str:
+    rule_id: Optional[int] = fetch_specific_url_filering_rule_id(
+        rule_name=rule_name,
+        tenant=tenant,
+    )
+    if rule_id is None:
+        return "[Error] Invalied URL Filtering Rule Name"
+    # api_put("/urlFilteringRules", tenant)
 
 
 def create_url_filering_rules(
