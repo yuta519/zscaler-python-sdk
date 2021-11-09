@@ -157,9 +157,10 @@ def api_post(
 def api_put(
     endpoint_path: str,
     payload: Dict[Any, Any],
+    tenant: str,
 ) -> Response:
-    api_endpoint: str = f"{base.base_url}{endpoint_path}"
-    api_token: str = login()
+    api_endpoint: str = f"{base.base_url[tenant]}{endpoint_path}"
+    api_token: str = login(tenant)
     headers: dict[str, str] = {
         "content-type": "application/json",
         "cache-control": "no-cache",
@@ -170,10 +171,5 @@ def api_put(
         json.dumps(payload),
         headers=headers,
     )
-    logout(api_token)
-
-    if response.status_code == 200:
-        return response
-    else:
-        print(response.status_code)
-        print(response.text)
+    logout(api_token, tenant)
+    return response
