@@ -2,6 +2,7 @@
 
 # from zscaler_python_sdk.url_filtering_rules import create_url_filering_rules
 # from zscaler_python_sdk.url_filtering_rules import fetch_all_url_filering_rules
+# from zscaler_python_sdk.url_filtering_rules import update_url_filtering_rule
 
 """
 # You can fetch URL Filtering Rules
@@ -38,4 +39,16 @@ message = create_url_filering_rules(
     tenant="xxxxxxxxxxxxxxxxxx",
 )
 print(message)
+"""
+
+
+"""
+# Update an existing rule
+
+message = update_url_filtering_rule(
+    rule_name="URL Filtering Rule-1",
+    tenant="xxxxxxxxxxxxxxxxxx",
+    state="ENABLED",
+)
+print(message.status_code, message.text)
 """
