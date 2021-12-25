@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "zscaler-python-sdk"
-version = "0.1.2"
+version = "0.2.0"
 description = ""
 authors = ["yuta519 <yuta519.ka23tf@docomo.ne.jp>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 requests = "^2.26.0"
 black = "^21.9b0"
 
