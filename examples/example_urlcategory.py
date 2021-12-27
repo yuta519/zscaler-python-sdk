@@ -40,3 +40,21 @@ url_category = lookup_url_classification(
 )
 print(url_category)
 """
+
+
+from zscaler_python_sdk.zia import Zia
+
+zia = Zia("/Users/yuta519/work/zscaler-python-sdk/config/config.ini")
+# print(zia.fetch_url_categories())
+# print(zia.lookup_url_category(["softbank.com", "https://www.innoscouter.com/"]))
+# print(
+#     zia.create_custom_url_category(
+#         "Kawamura Test Category",
+#         ["https://yuta519.github.io"],
+#         [],
+#         "API test",
+#     )
+# )
+# print(
+#     zia.update_url_in_category("BlackList_URLCategories", ["https://yuta519.github.io"])
+# )
