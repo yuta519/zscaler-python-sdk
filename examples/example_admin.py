@@ -45,4 +45,4 @@ print(create_adminuser_message)
 from zscaler_python_sdk.zia import Zia
 
 zia = Zia("/Users/yuta519/work/zscaler-python-sdk/config/config.ini")
-zia.fetch_admin_users()
+print(zia.fetch_admin_users())
