@@ -21,25 +21,15 @@ def post(api_token: str, api_endpoint: str, payload: dict[str, str]) -> any:
     response: Response = requests.post(
         api_endpoint, json.dumps(payload), headers=HEADER
     )
-    return response
+    return response.json()
 
 
-# def api_put(
-#     endpoint_path: str,
-#     payload: dict[any, Any],
-#     tenant: str,
-# ) -> Response:
-#     api_endpoint: str = f"{base.base_url[tenant]}{endpoint_path}"
-#     api_token: str = login(tenant)
-#     headers: dict[str, str] = {
-#         "content-type": "application/json",
-#         "cache-control": "no-cache",
-#         "cookie": api_token,
-#     }
-#     response: Response = requests.put(
-#         api_endpoint,
-#         json.dumps(payload),
-#         headers=headers,
-#     )
-#     logout(api_token, tenant)
-#     return response
+def put(api_token: str, endpoint_path: str, payload: dict[any, any]) -> dict[any, any]:
+    api_endpoint: str = f"{endpoint_path}"
+    HEADER["cookie"] = api_token
+    response: Response = requests.put(
+        api_endpoint,
+        json.dumps(payload),
+        headers=HEADER,
+    )
+    return response.json()

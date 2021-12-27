@@ -47,12 +47,12 @@ from zscaler_python_sdk.zia import Zia
 zia = Zia("/Users/yuta519/work/zscaler-python-sdk/config/config.ini")
 # print(zia.fetch_admin_users())
 # print(zia.fetch_admin_roles())
-print(
-    zia.create_admin_users(
-        "test1@zscaler.net",
-        "Yuta Kawamura",
-        "test1@zscaler.net",
-        "P@ssw0rd",
-        "Super Admin",
-    )
-)
+# print(
+#     zia.create_admin_users(
+#         "test1@zscaler.net",
+#         "Yuta Kawamura",
+#         "test1@zscaler.net",
+#         "P@ssw0rd",
+#         "Super Admin",
+#     )
+# )
