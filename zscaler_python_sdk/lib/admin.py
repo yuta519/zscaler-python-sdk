@@ -1,4 +1,5 @@
 from typing import Any
+from typing import Optional
 
 from requests.models import Response
 
@@ -6,12 +7,12 @@ from zscaler_python_sdk.lib import api
 
 
 def fetch_adminusers(
-    api_token: str, base_url: str, search_query: str = None
+    api_token: str, base_url: str, search_query: Optional[str] = None
 ) -> dict[Any, Any]:
     """Get Zscaler's url catergories."""
     endpoint_path: str = (
         f"{base_url}/adminUsers"
-        if search_query is not None
+        if search_query is None
         else f"{base_url}/adminUsers?search={search_query}"
     )
     response: Response = api.get(api_token, endpoint_path)

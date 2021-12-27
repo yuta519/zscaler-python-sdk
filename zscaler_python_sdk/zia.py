@@ -1,7 +1,6 @@
 import configparser
 import json
 import time
-from typing import Optional
 
 import requests
 from requests.models import Response
@@ -78,7 +77,8 @@ class Zia(object):
         admin_users = admin.fetch_adminusers(
             api_token=api_token, base_url=self.base_url, search_query=search_query
         )
-        print(admin_users)
+        self.logout(api_token)
+        return admin_users
 
     # def api_get(self, endpoint_path: str) -> dict[any, any]:
     #     """ """
