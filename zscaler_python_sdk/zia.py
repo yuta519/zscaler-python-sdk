@@ -4,6 +4,7 @@ from typing import Optional
 from zscaler_python_sdk.lib import admin
 from zscaler_python_sdk.lib import auth
 from zscaler_python_sdk.lib import url_categories
+from zscaler_python_sdk.lib import url_filtering_rules
 
 
 class Zia(object):
@@ -45,7 +46,7 @@ class Zia(object):
         auth.logout(api_token, self.base_url)
         return result
 
-    def fetch_url_categories(self, is_custom_only: Optional[str] = None):
+    def fetch_url_categories(self, is_custom_only: Optional[str] = None) -> list[str]:
         api_token: str = auth.login(
             self.base_url, self.admin_user, self.admin_password, self.api_key
         )
@@ -55,13 +56,14 @@ class Zia(object):
         auth.logout(api_token, self.base_url)
         return categories
 
-    def lookup_url_category(self, target_urls: list[str]):
+    def lookup_url_category(self, target_urls: list[str]) -> list[str]:
         api_token: str = auth.login(
             self.base_url, self.admin_user, self.admin_password, self.api_key
         )
         lookuped_categories = url_categories.lookup_url_classification(
             api_token, self.base_url, target_urls
         )
+        auth.logout(api_token, self.base_url)
         return lookuped_categories
 
     def create_custom_url_category(
@@ -70,7 +72,7 @@ class Zia(object):
         urls: list[str],
         db_categorized_urls: list[str],
         description: str,
-    ):
+    ) -> str:
         api_token: str = auth.login(
             self.base_url, self.admin_user, self.admin_password, self.api_key
         )
@@ -82,9 +84,10 @@ class Zia(object):
             db_categorized_urls,
             description,
         )
+        auth.logout(api_token, self.base_url)
         return new_category
 
-    def update_url_in_category(self, category_name: str, urls: list[str]):
+    def update_url_in_category(self, category_name: str, urls: list[str]) -> dict:
         api_token: str = auth.login(
             self.base_url, self.admin_user, self.admin_password, self.api_key
         )
@@ -96,4 +99,87 @@ class Zia(object):
         result = url_categories.update_custom_url_category(
             api_token, self.base_url, category_id, urls
         )
+        auth.logout(api_token, self.base_url)
+        return result
+
+    def fetch_all_url_filtering_rules(self, is_full: bool = False) -> list[str]:
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        rules: list[str] = url_filtering_rules.fetch_all(
+            api_token, self.base_url, is_full
+        )
+        auth.logout(api_token, self.base_url)
+        return rules
+
+    def fetch_one_url_filtering_rules(self, rule_name: str) -> list[str]:
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        rule: dict[str, str] = url_filtering_rules.fetch_one_by_rulename(
+            api_token, self.base_url, rule_name
+        )
+        auth.logout(api_token, self.base_url)
+        return rule
+
+    def create_url_filtering_rule(
+        self,
+        name: str,
+        order: int,
+        protocols: list[str],
+        locations: list[str],
+        groups: list[str],
+        departments: list[str],
+        users: list[str],
+        url_categories: list[str],
+        state: str,
+        rank: int,
+        action: str,
+    ):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        result = url_filtering_rules.create(
+            api_token,
+            self.base_url,
+            name,
+            order,
+            protocols,
+            locations,
+            groups,
+            departments,
+            users,
+            url_categories,
+            state,
+            rank,
+            action,
+        )
+        auth.logout(api_token, self.base_url)
+        return result
+
+    def update_url_filtering_rule(
+        self,
+        rule_name: str,
+        name: Optional[str] = None,
+        order: Optional[int] = None,
+        rank: Optional[int] = None,
+        state: Optional[str] = None,
+        protocols: Optional[list] = None,
+        action: Optional[str] = None,
+    ) -> str:
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        result = url_filtering_rules.update(
+            api_token,
+            self.base_url,
+            rule_name,
+            name,
+            order,
+            rank,
+            state,
+            protocols,
+            action,
+        )
+        auth.logout(api_token, self.base_url)
         return result
