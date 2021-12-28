@@ -3,8 +3,6 @@ from typing import Union
 
 from zscaler_python_sdk.lib import api
 
-from requests.models import Response
-
 
 def fetch_all(api_token: str, base_url, is_full: bool) -> dict[str, str]:
     """Get Zscaler's url filtering rules."""
