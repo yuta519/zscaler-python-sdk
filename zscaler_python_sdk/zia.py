@@ -5,6 +5,7 @@ from zscaler_python_sdk.lib import admin
 from zscaler_python_sdk.lib import auth
 from zscaler_python_sdk.lib import url_categories
 from zscaler_python_sdk.lib import url_filtering_rules
+from zscaler_python_sdk.lib import users
 
 
 class Zia(object):
@@ -45,6 +46,39 @@ class Zia(object):
         )
         auth.logout(api_token, self.base_url)
         return result
+
+    def fetch_users(
+        self,
+        name: Optional[str] = None,
+        department: Optional[str] = None,
+        group: Optional[str] = None,
+        page: Optional[int] = None,
+        size: Optional[int] = None,
+    ) -> list[str]:
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        user_list = users.fetch_users(
+            api_token, self.base_url, name, department, group, page, size
+        )
+        auth.logout(api_token, self.base_url)
+        return user_list
+
+    def fetch_departments(self, search: Optional[int] = None) -> list[str]:
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        departments = users.fetch_departments(api_token, self.base_url, search)
+        auth.logout(api_token, self.base_url)
+        return departments
+
+    def fetch_groups(self, search: Optional[int] = None) -> list[str]:
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        groups = users.fetch_groups(api_token, self.base_url, search)
+        auth.logout(api_token, self.base_url)
+        return groups
 
     def fetch_url_categories(self, is_custom_only: Optional[str] = None) -> list[str]:
         api_token: str = auth.login(
