@@ -29,3 +29,10 @@ groups = fetch_groups(
 )
 print(groups)
 """
+
+from zscaler_python_sdk.zia import Zia
+
+zia = Zia("/Users/yuta519/work/zscaler-python-sdk/config/config.ini")
+# print(zia.fetch_users())
+print(zia.fetch_departments())
+print(zia.fetch_groups())

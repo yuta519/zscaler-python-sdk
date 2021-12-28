@@ -1,68 +1,63 @@
-from typing import Any, Optional
-from typing import Dict
-from zscaler_python_sdk.zia import api_get
-
-# from zscaler_python_sdk.zia import api_post
+from typing import Any
+from zscaler_python_sdk.lib import api
 
 from requests.models import Response
 
 
 def fetch_users(
-    name: Optional[str] = None,
-    dept: Optional[str] = None,
-    group: Optional[str] = None,
-    page: Optional[int] = None,
-    size: Optional[int] = None,
-    tenant: str = None,
-) -> Dict[str, Any]:
+    api_token: str,
+    base_url: str,
+    name: str,
+    department: str,
+    group: str,
+    page: int,
+    size: int,
+) -> dict[str, Any]:
     """Get users who are using Zscaler."""
-    name_query: Optional[str] = f"name={name}" if name is not None else None
-    dept_query: Optional[str] = f"dept={dept}" if dept is not None else None
-    group_query: Optional[str] = f"group={group}" if group is not None else None
-    page_query: Optional[str] = f"page={page}" if page is not None else None
-    size_query: Optional[str] = f"pageSize={size}" if size is not None else None
+    name_query: str = f"name={name}" if name is not None else None
+    department_query: str = f"dept={department}" if department is not None else None
+    group_query: str = f"group={group}" if group is not None else None
+    page_query: str = f"page={page}" if page is not None else None
+    size_query: str = f"pageSize={size}" if size is not None else None
 
     endpoint_path: str = "/users?"
-    for query in [name_query, dept_query, group_query, page_query, size_query]:
+    for query in [name_query, department_query, group_query, page_query, size_query]:
         if query is not None:
             endpoint_path += f"&{query}"
+    users = api.get(api_token, base_url + endpoint_path)
+    return users
 
-    response: Response = api_get(endpoint_path, tenant)
-    return response
 
-
-def fetch_departments(
-    search: Optional[str] = None,
-    tenant: Optional[str] = None,
-) -> Dict[str, Any]:
-    response: Response = api_get(
-        "/departments" if search is None else f"/departments?search={search}",
-        tenant,
+def fetch_departments(api_token: str, base_url: str, search: str) -> dict[str, Any]:
+    departments = api.get(
+        api_token,
+        f"{base_url}/departments"
+        if search is None
+        else f"{base_url}/departments?search={search}",
     )
-    return response
+    return departments
 
 
-def fetch_groups(
-    search: Optional[str] = None,
-    tenant: Optional[str] = None,
-) -> Dict[str, Any]:
-    response: Response = api_get(
-        "/groups" if search is None else f"/groups?search={search}",
-        tenant,
+def fetch_groups(api_token: str, base_url: str, search: str) -> dict[str, Any]:
+    groups = api.get(
+        api_token,
+        f"{base_url}/groups"
+        if search is None
+        else f"{base_url}/groups?search={search}",
     )
-    return response
+    return groups
 
 
 # TODO: yuta519
-def create_user() -> Dict[str, Any]:
+def create_user() -> dict[str, Any]:
     pass
 
 
 # TODO: yuta519
-def update_user() -> Dict[str, Any]:
+def update_user() -> dict[str, Any]:
     pass
 
 
 # TODO: yuta519
-def delete_user() -> Dict[str, Any]:
+def delete_user() -> dict[str, Any]:
     pass
