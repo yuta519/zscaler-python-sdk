@@ -1,8 +1,10 @@
 [tool.poetry]
 name = "zscaler-python-sdk"
 version = "0.2.0"
-description = ""
+description = "Unofficial Zscaler API python sdk"
 authors = ["yuta519 <yuta519.ka23tf@docomo.ne.jp>"]
+license = "MIT"
+readme = "README.rst"
 
 [tool.poetry.dependencies]
 python = "^3.9"
