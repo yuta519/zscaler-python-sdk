@@ -19,21 +19,61 @@ def fetch_one_by_rule_name(api_token: str, base_url: str, rule_name: str) -> lis
     return None
 
 
-# def fetch_firewall_rules(
-#     rule_id: Optional[str] = None,
-#     tenant: Optional[str] = None,
-# ) -> Dict[str, Any]:
-#     firewall_rules: Dict[str, Any] = api_get(
-#         "/firewallFilteringRules"
-#         if rule_id is None
-#         else f"/firewallFilteringRules/{rule_id}",
-#         tenant,
-#     )
-#     return firewall_rules
-
-
-# def create_new_firewall_rule() -> str:
-#     pass
+def createe(
+    api_token: str,
+    base_url: str,
+    rule_name: str,
+    order: int,
+    accessControl: str,
+    enableFullLogging: str,
+    rank: int,
+    users: list[str],
+    action: str,
+    state: str,
+    description: str,
+    destIpCategories: str,
+    destCountries: str,
+    nwServices: list[dict[str]],
+) -> list[str]:
+    print(
+        {
+            "name": rule_name,
+            "order": order,
+            "accessControl": accessControl,
+            "enableFullLogging": enableFullLogging,
+            "rank": rank,
+            "users": users,
+            "action": action,
+            "state": state,
+            "description": description,
+            "destIpCategories": destIpCategories,
+            "destCountries": destCountries,
+            "nwServices": nwServices,
+            "predefined": False,
+            "defaultRule": False,
+        },
+    )
+    result = api.post(
+        api_token,
+        f"{base_url}/firewallFilteringRules",
+        {
+            "name": rule_name,
+            "order": order,
+            "accessControl": accessControl,
+            "enableFullLogging": enableFullLogging,
+            "rank": rank,
+            "users": users,
+            "action": action,
+            "state": state,
+            "description": description,
+            "destIpCategories": destIpCategories,
+            "destCountries": destCountries,
+            "nwServices": nwServices,
+            "predefined": False,
+            "defaultRule": False,
+        },
+    )
+    return result
 
 
 # def update_firewall_rule() -> str:

@@ -236,3 +236,40 @@ class Zia(object):
         )
         auth.logout(api_token, self.base_url)
         return fw_rules
+
+    def create_fw_rule(
+        self,
+        rule_name: str,
+        order: int,
+        accessControl: str,
+        enableFullLogging: str,
+        rank: int,
+        users: list[str],
+        action: str,
+        state: str,
+        description: str,
+        destIpCategories: str,
+        destCountries: str,
+        nwServices: list[dict[str]],
+    ):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        result = firewall_rules.createe(
+            api_token,
+            self.base_url,
+            rule_name,
+            order,
+            accessControl,
+            enableFullLogging,
+            rank,
+            users,
+            action,
+            state,
+            description,
+            destIpCategories,
+            destCountries,
+            nwServices,
+        )
+        auth.logout(api_token, self.base_url)
+        return result

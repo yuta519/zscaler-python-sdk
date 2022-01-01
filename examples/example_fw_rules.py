@@ -63,4 +63,20 @@ from zscaler_python_sdk.zia import Zia
 
 zia = Zia("/Users/yuta519/work/zscaler-python-sdk/config/config.ini")
 # print(zia.fetching_all_fw_rules())
-print(zia.fetching_one_fw_rule("Office 365 One Click Rule"))
+# print(zia.fetching_one_fw_rule("Office 365 One Click Rule"))
+print(
+    zia.create_fw_rule(
+        "test fw rule",
+        1,
+        "READ_WRITE",
+        False,
+        0,
+        [],
+        "BLOCK_RESET",
+        "ENABLED",
+        "api test rule",
+        [],
+        [],
+        [],
+    )
+)
