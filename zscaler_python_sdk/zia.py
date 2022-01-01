@@ -3,6 +3,7 @@ from typing import Optional
 
 from zscaler_python_sdk.lib import admin
 from zscaler_python_sdk.lib import auth
+from zscaler_python_sdk.lib import firewall_rules
 from zscaler_python_sdk.lib import url_categories
 from zscaler_python_sdk.lib import url_filtering_rules
 from zscaler_python_sdk.lib import users
@@ -217,3 +218,21 @@ class Zia(object):
         )
         auth.logout(api_token, self.base_url)
         return result
+
+    def fetching_all_fw_rules(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        fw_rules: list[str] = firewall_rules.fetch_all(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return fw_rules
+
+    def fetching_one_fw_rule(self, rule_name: str):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        fw_rules: list[str] = firewall_rules.fetch_one_by_rule_name(
+            api_token, self.base_url, rule_name
+        )
+        auth.logout(api_token, self.base_url)
+        return fw_rules

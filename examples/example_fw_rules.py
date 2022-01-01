@@ -58,3 +58,9 @@ nw_apps = fetch_network_applicatios(
 )
 print(nw_apps)
 """
+
+from zscaler_python_sdk.zia import Zia
+
+zia = Zia("/Users/yuta519/work/zscaler-python-sdk/config/config.ini")
+# print(zia.fetching_all_fw_rules())
+print(zia.fetching_one_fw_rule("Office 365 One Click Rule"))
