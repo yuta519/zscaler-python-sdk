@@ -3,6 +3,8 @@ from typing import Optional
 
 from zscaler_python_sdk.lib import admin
 from zscaler_python_sdk.lib import auth
+from zscaler_python_sdk.lib import firewall_rules
+from zscaler_python_sdk.lib import ip_group
 from zscaler_python_sdk.lib import url_categories
 from zscaler_python_sdk.lib import url_filtering_rules
 from zscaler_python_sdk.lib import users
@@ -217,3 +219,76 @@ class Zia(object):
         )
         auth.logout(api_token, self.base_url)
         return result
+
+    def fetching_all_fw_rules(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        fw_rules: list[str] = firewall_rules.fetch_all(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return fw_rules
+
+    def fetching_one_fw_rule(self, rule_name: str):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        fw_rules: list[str] = firewall_rules.fetch_one_by_rule_name(
+            api_token, self.base_url, rule_name
+        )
+        auth.logout(api_token, self.base_url)
+        return fw_rules
+
+    def create_fw_rule(
+        self,
+        rule_name: str,
+        order: int,
+        accessControl: str,
+        enableFullLogging: str,
+        rank: int,
+        users: list[str],
+        action: str,
+        state: str,
+        description: str,
+        destIpCategories: str,
+        destCountries: str,
+        nwServices: list[dict[str]],
+    ):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        result = firewall_rules.createe(
+            api_token,
+            self.base_url,
+            rule_name,
+            order,
+            accessControl,
+            enableFullLogging,
+            rank,
+            users,
+            action,
+            state,
+            description,
+            destIpCategories,
+            destCountries,
+            nwServices,
+        )
+        auth.logout(api_token, self.base_url)
+        return result
+
+    def fetch_all_ip_dst_groups(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        ip_dst_groups = ip_group.fetch_all_dst_groups(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return ip_dst_groups
+
+    def fetch_one_ip_dst_group(self, group_name: str):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        ip_dst_group = ip_group.fetch_one_dst_groups(
+            api_token, self.base_url, group_name
+        )
+        auth.logout(api_token, self.base_url)
+        return ip_dst_group
