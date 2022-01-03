@@ -4,6 +4,7 @@ from typing import Optional
 from zscaler_python_sdk.lib import admin
 from zscaler_python_sdk.lib import auth
 from zscaler_python_sdk.lib import firewall_rules
+from zscaler_python_sdk.lib import ip_group
 from zscaler_python_sdk.lib import url_categories
 from zscaler_python_sdk.lib import url_filtering_rules
 from zscaler_python_sdk.lib import users
@@ -273,3 +274,21 @@ class Zia(object):
         )
         auth.logout(api_token, self.base_url)
         return result
+
+    def fetch_all_ip_dst_groups(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        ip_dst_groups = ip_group.fetch_all_dst_groups(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return ip_dst_groups
+
+    def fetch_one_ip_dst_group(self, group_name: str):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        ip_dst_group = ip_group.fetch_one_dst_groups(
+            api_token, self.base_url, group_name
+        )
+        auth.logout(api_token, self.base_url)
+        return ip_dst_group
