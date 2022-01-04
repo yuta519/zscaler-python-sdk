@@ -19,7 +19,7 @@ def fetch_one_by_rule_name(api_token: str, base_url: str, rule_name: str) -> lis
     return None
 
 
-def createe(
+def create(
     api_token: str,
     base_url: str,
     rule_name: str,
@@ -35,24 +35,6 @@ def createe(
     destCountries: str,
     nwServices: list[dict[str]],
 ) -> list[str]:
-    print(
-        {
-            "name": rule_name,
-            "order": order,
-            "accessControl": accessControl,
-            "enableFullLogging": enableFullLogging,
-            "rank": rank,
-            "users": users,
-            "action": action,
-            "state": state,
-            "description": description,
-            "destIpCategories": destIpCategories,
-            "destCountries": destCountries,
-            "nwServices": nwServices,
-            "predefined": False,
-            "defaultRule": False,
-        },
-    )
     result = api.post(
         api_token,
         f"{base_url}/firewallFilteringRules",
@@ -68,6 +50,7 @@ def createe(
             "description": description,
             "destIpCategories": destIpCategories,
             "destCountries": destCountries,
+            # 'destIpGroups': [{'id': 927590, 'name': 'NoSSL_NoOtherPolicies_IPs'}],
             "nwServices": nwServices,
             "predefined": False,
             "defaultRule": False,
@@ -77,27 +60,6 @@ def createe(
 
 
 # def update_firewall_rule() -> str:
-#     pass
-
-
-# def fetch_ip_destination_groups(
-#     ip_group_id: Optional[int] = None,
-#     tenant: Optional[str] = None,
-# ) -> Dict[str, Any]:
-#     ip_destination_groups: Dict[str, Any] = api_get(
-#         "/ipDestinationGroups"
-#         if ip_group_id is None
-#         else f"/ipDestinationGroups/{ip_group_id}",
-#         tenant,
-#     )
-#     return ip_destination_groups
-
-
-# def create_ip_destination_groups() -> str:
-#     pass
-
-
-# def update_ip_destination_group() -> str:
 #     pass
 
 

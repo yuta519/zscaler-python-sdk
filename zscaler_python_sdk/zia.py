@@ -5,6 +5,8 @@ from zscaler_python_sdk.lib import admin
 from zscaler_python_sdk.lib import auth
 from zscaler_python_sdk.lib import firewall_rules
 from zscaler_python_sdk.lib import ip_group
+from zscaler_python_sdk.lib import nw_app
+from zscaler_python_sdk.lib import nw_service
 from zscaler_python_sdk.lib import url_categories
 from zscaler_python_sdk.lib import url_filtering_rules
 from zscaler_python_sdk.lib import users
@@ -256,7 +258,7 @@ class Zia(object):
         api_token: str = auth.login(
             self.base_url, self.admin_user, self.admin_password, self.api_key
         )
-        result = firewall_rules.createe(
+        result = firewall_rules.create(
             api_token,
             self.base_url,
             rule_name,
@@ -292,3 +294,55 @@ class Zia(object):
         )
         auth.logout(api_token, self.base_url)
         return ip_dst_group
+
+    def fetch_all_ip_src_groups(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        ip_dst_groups = ip_group.fetch_all_src_groups(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return ip_dst_groups
+
+    def fetch_one_ip_src_group(self, group_name: str):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        ip_src_group = ip_group.fetch_one_src_groups(
+            api_token, self.base_url, group_name
+        )
+        auth.logout(api_token, self.base_url)
+        return ip_src_group
+
+    def fetch_all_nw_apps(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        nw_apps = nw_app.fetch_all_nw_apps(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return nw_apps
+
+    def fetch_all_nw_app_groups(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        nw_app_groups = nw_app.fetch_all_nw_app_groups(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return nw_app_groups
+
+    def fetch_all_nw_services(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        nw_services = nw_service.fetch_all_nw_services(api_token, self.base_url)
+        auth.logout(api_token, self.base_url)
+        return nw_services
+
+    def fetch_all_nw_service_group(self):
+        api_token: str = auth.login(
+            self.base_url, self.admin_user, self.admin_password, self.api_key
+        )
+        nw_service_group = nw_service.fetch_all_nw_service_groups(
+            api_token, self.base_url
+        )
+        auth.logout(api_token, self.base_url)
+        return nw_service_group
